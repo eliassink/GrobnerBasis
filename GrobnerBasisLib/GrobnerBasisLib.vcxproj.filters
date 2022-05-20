@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\parser">
+      <UniqueIdentifier>{e1be5530-f7fa-4125-9773-0c32da6c6f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\termorder">
+      <UniqueIdentifier>{4be8b618-16eb-4671-a3e6-8b5d31e9a9d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\printer">
+      <UniqueIdentifier>{bd4a97fc-d5e3-4d70-9eab-9bb19fdd99d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\polynomial">
+      <UniqueIdentifier>{6bce0fd2-1917-4908-a205-d0475f83d526}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Rational.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.h">
+      <Filter>Header Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="RationalParser.h">
+      <Filter>Header Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="LexTermOrder.h">
+      <Filter>Header Files\termorder</Filter>
+    </ClInclude>
+    <ClInclude Include="DegLexTermOrder.h">
+      <Filter>Header Files\termorder</Filter>
+    </ClInclude>
+    <ClInclude Include="Printer.h">
+      <Filter>Header Files\printer</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamPrinter.h">
+      <Filter>Header Files\printer</Filter>
+    </ClInclude>
+    <ClInclude Include="Polynomial.h">
+      <Filter>Header Files\polynomial</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerProduct.h">
+      <Filter>Header Files\polynomial</Filter>
+    </ClInclude>
+    <ClInclude Include="Ideal.h">
+      <Filter>Header Files\polynomial</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PowerProduct.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LexTermOrder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DegLexTermOrder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="PowerProductUML.txt">
+      <Filter>Header Files\polynomial</Filter>
+    </Text>
+    <Text Include="StreamPrinterUML.txt">
+      <Filter>Header Files\printer</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

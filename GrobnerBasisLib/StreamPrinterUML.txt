@@ -1,0 +1,16 @@
+								StreamPrinter<Coef>
++ StreamPrinter()															Default names
++ StreamPrinter(varNames : initializer_list<string>)						Custom names from init list
++ StreamPrinter(first : StringIterator, last: StringIterator)				Custom names from iterator range
+
++ addTerm(coef : const Coef&, powerProduct : const PowerProduct&) : void	Add term to buffer
+
++ print() : string															Print terms in buffer
+
++ powerProductString(degrees : vector<int>)									Convert the degrees of a power product to a string
+
+- mStringStream : ostringstream												Buffer
+- mVarNames : vector<string>												Vector of variable names
+- isZero : bool																True if empty buffer
+- var(n : size_t)															nth variable name
+

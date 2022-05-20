@@ -1,0 +1,21 @@
+								PowerProduct
++ PowerProduct()											Constructs power product "1"
++ PowerProduct(n : size_t)									Constructs the nth variable
+
++ operator==(right : const PowerProduct&) : bool			Compares for equality
++ operator!=(right : const PowerProduct&) : bool			
+
++ operator*(right : const PowerProduct&) : PowerProduct		Multiplication
+
++ operator/(right : const PowerProduct&) : PowerProduct		Division
+
++ operator*=(right : const PowerProduct&) : PowerProduct&	Compound assignment
++ operator/=(right : const PowerProduct&) : PowerProduct&
+
++ pow(power : int) : PowerProduct							Exponentiation
++ isDivisibleBy(divisor : const PowerProduct&) : bool		Test divisibility
++ lcm(other : const PowerProduct&) : PowerProduct			Least common multiple
+
++ toString<Coef>(Printer<Coef>& printer) : string			Convert to string via a printer
+
+- mDegrees : vector<int>									The vector of degrees
