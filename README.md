@@ -1,1 +1,1 @@
-GrobnerBasis
+This was my self-directed final project for CSC-237: C++ Programming Honors at Bunker Hill Community College in Spring 2022. It's a simple command line tool for solving the ideal membership problem in commutative algebra using Grobner bases. 
