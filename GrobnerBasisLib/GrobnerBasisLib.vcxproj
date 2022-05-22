@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DegLexTermOrder.h" />
+    <ClInclude Include="DegRevLexTermOrder.h" />
     <ClInclude Include="Ideal.h" />
     <ClInclude Include="LexTermOrder.h" />
     <ClInclude Include="Parser.h" />
@@ -34,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DegLexTermOrder.cpp" />
+    <ClCompile Include="DegRevLexTermOrder.cpp" />
     <ClCompile Include="LexTermOrder.cpp" />
     <ClCompile Include="PowerProduct.cpp" />
     <ClCompile Include="RationalParser.cpp" />

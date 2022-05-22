@@ -34,9 +34,11 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="TermOrderTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DegLexTermOrderTest.cpp" />
+    <ClCompile Include="DegRevLexTermOrderTest.cpp" />
     <ClCompile Include="IdealTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>

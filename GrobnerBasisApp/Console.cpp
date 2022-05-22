@@ -6,6 +6,7 @@ Date: 5/12/2022
 #include "Console.h"
 #include "LexTermOrder.h"
 #include "DegLexTermOrder.h"
+#include "DegRevLexTermOrder.h"
 
 //printed by the "help" command
 const std::string helpString =
@@ -30,7 +31,7 @@ const std::string helpString =
 ">>reduce y^2*x^3\n"
 "-y*x + x - 1\n\n"
 "termorder NAME\n"
-"Sets the term order to use. Options are lex and deglex.\n\n"
+"Sets the term order to use. Options are lex, deglex, and degrevlex.\n\n"
 "quit\n"
 "Quits the application.\n\n";
 
@@ -138,6 +139,11 @@ void Console::setTermOrder(std::istream& input, std::ostream& output)
 		{
 			mIdeal.setTermOrder(std::make_unique<DegLexTermOrder>());
 			output << "Term order changed to deglex\n";
+		}
+		else if (name == "degrevlex")
+		{
+			mIdeal.setTermOrder(std::make_unique<DegRevLexTermOrder>());
+			output << "Term order changed to degrevlex\n";
 		}
 		else
 		{

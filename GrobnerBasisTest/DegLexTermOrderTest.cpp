@@ -1,20 +1,12 @@
 #include "pch.h"
 #include "../GrobnerBasisLib/DegLexTermOrder.h"
+#include "TermOrderTest.h"
 
 //test the degree lexicographical term order
-class DegLexTermOrderTest : public testing::Test
+class DegLexTermOrderTest : public testing::Test, public TermOrderTest
 {
 protected:
 	DegLexTermOrder deglex;
-	//construct a power product with the given degrees
-	PowerProduct powerProduct(std::initializer_list<int> degrees)
-	{
-		PowerProduct pp;
-		int i = 0;
-		for (int d : degrees)
-			pp *= PowerProduct(i++).pow(d);
-		return pp;
-	}
 };
 
 //Test degree lexicographical comparison

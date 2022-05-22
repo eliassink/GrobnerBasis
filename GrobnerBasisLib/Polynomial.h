@@ -1,13 +1,6 @@
 /*
 Author: Elias Sink
 Date: 5/11/2022
-Notes: Ideally, the term order could be determined at runtime, rather 
-than at compile time via templates. This requires either injecting it 
-into each polynomial instance (which complicates things significantly)
-or passing a TermOrder as an argument to the methods that need comparisons
-(like leadingTerm). I'd probably favor the latter choice in retrospect, but 
-it's not a mission-critical feature and I'm out of time to refactor for now.
-For now, the static polymoprhism is adequate.
 */
 
 #pragma once

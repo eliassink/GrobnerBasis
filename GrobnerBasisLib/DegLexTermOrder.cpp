@@ -3,14 +3,14 @@
 #include <algorithm>
 using namespace std;
 
-bool DegLexTermOrder::compare(const vector<int>& degrees, const vector<int>& otherDegrees) const
+bool DegLexTermOrder::compare(const vector<int>& lDegrees, const vector<int>& rDegrees) const
 {
-	int totalDegree = accumulate(degrees.begin(), degrees.end(), 0); //sum of degrees
-	int otherTotalDegree = accumulate(otherDegrees.begin(), otherDegrees.end(), 0); 
-	if (totalDegree != otherTotalDegree) //compare total degree
-		return totalDegree < otherTotalDegree;
+	int lTotalDegree = accumulate(lDegrees.begin(), lDegrees.end(), 0); //sum of degrees
+	int rTotalDegree = accumulate(rDegrees.begin(), rDegrees.end(), 0); 
+	if (lTotalDegree != rTotalDegree) //compare total degree
+		return lTotalDegree < rTotalDegree;
 	return lexicographical_compare( //break ties with lex
-		degrees.begin(), degrees.end(),
-		otherDegrees.begin(), otherDegrees.end()
+		lDegrees.begin(), lDegrees.end(),
+		rDegrees.begin(), rDegrees.end()
 	);
 }

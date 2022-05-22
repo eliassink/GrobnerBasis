@@ -1,20 +1,12 @@
 #include "pch.h"
+#include "TermOrderTest.h"
 #include "../GrobnerBasisLib/PowerProduct.h"
 #include "../GrobnerBasisLib/LexTermOrder.h"
 
-class LexTermOrderTest : public testing::Test
+class LexTermOrderTest : public testing::Test, public TermOrderTest
 {
 protected:
 	LexTermOrder lex{};
-	PowerProduct powerProduct(std::initializer_list<int> degrees)
-	{
-		PowerProduct pp;
-		int i = 0;
-		for (int d : degrees)
-			pp *= PowerProduct(i++).pow(d);
-		return pp;
-	}
-	
 };
 
 TEST_F(LexTermOrderTest, CompareTest)

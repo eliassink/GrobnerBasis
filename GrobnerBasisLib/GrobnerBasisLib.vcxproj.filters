@@ -57,6 +57,9 @@
     <ClInclude Include="Ideal.h">
       <Filter>Header Files\polynomial</Filter>
     </ClInclude>
+    <ClInclude Include="DegRevLexTermOrder.h">
+      <Filter>Header Files\termorder</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PowerProduct.cpp">
@@ -69,6 +72,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RationalParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DegRevLexTermOrder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
