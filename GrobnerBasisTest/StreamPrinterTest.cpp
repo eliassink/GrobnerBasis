@@ -3,15 +3,17 @@
 #include "../GrobnerBasisLib/Rational.h"
 #include "../GrobnerBasisLib/Ideal.h"
 #include "../GrobnerBasisLib/LexTermOrder.h"
+#include "../GrobnerBasisLib/DegLexTermOrder.h"
 
 class StreamPrinterTest : public testing::Test
 {
 protected:
-	using Q = Rational<int>;
-	using P = Polynomial<Q, LexTermOrder>;
-	using I = Ideal<Q, LexTermOrder>;
+	using Q = Rational<>;
+	using P = Polynomial<Q>;
+	using I = Ideal<Q>;
 	StreamPrinter<Q> defaultPrinter;
 	StreamPrinter<Q> customPrinter{"x","y"};
+	DegLexTermOrder deglex;
 	P x{ PowerProduct(0)};
 	P y{ PowerProduct(1) };
 	P f{ 1 + x - y.pow(2) };
@@ -31,6 +33,10 @@ TEST_F(StreamPrinterTest, DefaultTest)
 	EXPECT_EQ(h.toString(defaultPrinter), "-3*x1*x2^2 - 2");
 	EXPECT_EQ(i.toString(defaultPrinter), "( x1 )");
 	EXPECT_EQ(j.toString(defaultPrinter), "( x1 , x2 + 1 )");
+
+	//dynamic term order
+	EXPECT_EQ(f.toString(defaultPrinter,deglex), "-x2^2 + x1 + 1");
+	EXPECT_EQ(g.toString(defaultPrinter,deglex), "-5*x1^2 - 3/2*x2 + 1/2");
 }
 
 TEST_F(StreamPrinterTest, CustomTest)

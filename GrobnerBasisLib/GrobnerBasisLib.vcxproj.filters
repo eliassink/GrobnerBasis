@@ -68,6 +68,9 @@
     <ClCompile Include="DegLexTermOrder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RationalParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="PowerProductUML.txt">

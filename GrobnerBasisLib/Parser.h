@@ -8,22 +8,15 @@ Notes: Possibly unnecessarily general
 #include <string>
 #include <stdexcept>
 
-/// <summary>
-/// Interface for parsing a string and returning a T.
-/// </summary>
+// Interface for parsing a string and returning a T.
 template <typename T>
 class Parser
 {
 public:
-	/// <summary>
-	/// Parse the given string.
-	/// </summary>
-	/// <returns>the parsed value</returns>
+	// Parse the given string.
 	virtual T parse(const std::string& input) const = 0;
 
-	/// <summary>
-	/// Indicates an exception occured while parsing
-	/// </summary>
+	// Indicates an exception occured while parsing.
 	class ParseException : public std::runtime_error {
 	public:
 		explicit ParseException() {}

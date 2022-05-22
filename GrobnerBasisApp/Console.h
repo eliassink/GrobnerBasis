@@ -11,7 +11,6 @@ it simple for now.
 #include <sstream>
 #include <vector>
 #include "Ideal.h"
-#include "LexTermOrder.h"
 #include "Ideal.h"
 #include "RationalParser.h"
 #include "StreamPrinter.h"
@@ -19,44 +18,35 @@ it simple for now.
 class Console
 {
 public:
-	/// <summary>
-	/// Construct a Console using the variable names in
-	/// the range [first,last).
-	/// </summary>
+	// Constructs a Console using the variable names in
+	// the range [first,last).
 	template<typename StringIterator>
 	Console(StringIterator first, StringIterator last)
 		: mPrinter{ first, last }, mParser{ first, last } {}
 
-	/// <summary>
-	/// Construct a Console using the variable names in
-	/// the initializer list.
-	/// </summary>
+	// Constructs a Console using the variable names in
+	// the initializer list.
 	Console(std::initializer_list<std::string> varNames)
 		: mPrinter{ varNames }, mParser{ varNames } {}
 
-	//returns false after the quit commmand has been issued.
+	// Returns false after the quit commmand has been issued.
 	operator bool() { return !mQuit; }
 
-	/// <summary>
-	/// Returns a header string to display at startup.
-	/// </summary>
+	// Returns a header string to display at startup.
 	std::string header();
 
-	/// <summary>
-	/// Process a command.
-	/// </summary>
-	/// <param name="commandLine">- one line of input</param>
-	/// <returns>the result of the command</returns>
+	// Processes a command and returns a response. 
 	std::string dispatchCommand(const std::string& commandLine);
 
 private:
-	StreamPrinter<Rational<int>> mPrinter; //to print polynomials, etc.
-	RationalParser<LexTermOrder> mParser; //to parse polynomials
-	Ideal<Rational<int>, LexTermOrder> mIdeal; //the current ideal being considered
+	StreamPrinter<Rational<>> mPrinter; //to print polynomials, etc.
+	RationalParser mParser; //to parse polynomials
+	Ideal<Rational<>> mIdeal; //the current ideal being considered
 	bool mQuit{ false }; //true if the quit command has been issued
 
 	void setIdeal(std::istream& input, std::ostream& output); //sets the current ideal
 	void isMember(std::istream& input, std::ostream& output); //decideds membership
 	void reduce(std::istream& input, std::ostream& output); //reduces a polynomial
+	void setTermOrder(std::istream& input, std::ostream& output); //sets term order
 };
 

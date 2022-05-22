@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "../GrobnerBasisLib/Polynomial.h"
 #include "../GrobnerBasisLib/LexTermOrder.h"
+#include "../GrobnerBasisLib/DegLexTermOrder.h"
 #include "../GrobnerBasisLib/Rational.h"
 
 template <typename _T>
@@ -8,12 +9,14 @@ class PolynomialTest : public testing::Test
 {
 protected:
 	using T = _T;
-	using P = Polynomial<T,LexTermOrder>;
+	using P = Polynomial<T>;
 	P x{ PowerProduct(0)};
 	P y{ PowerProduct(1) };
+	LexTermOrder lex;
+	DegLexTermOrder deglex;
 };
 
-using CoefficientTypes = testing::Types<double,Rational<int>>;
+using CoefficientTypes = testing::Types<double,Rational<>>;
 TYPED_TEST_CASE(PolynomialTest, CoefficientTypes);
 
 TYPED_TEST(PolynomialTest, AdditionTest)
@@ -69,23 +72,34 @@ TYPED_TEST(PolynomialTest, DivisionTest)
 
 TYPED_TEST(PolynomialTest, LeadingPowerProductTest)
 {
-	EXPECT_EQ(x.leadingPower(), PowerProduct(0));
-	EXPECT_EQ((2 * x.pow(2) * y + x * y.pow(3)).leadingPower(), PowerProduct(0).pow(2)*PowerProduct(1));
-	EXPECT_THROW(P(0).leadingPower(),std::exception);
+	EXPECT_EQ(x.leadingPower(lex), PowerProduct(0));
+	EXPECT_EQ(
+		(2 * x.pow(2) * y + x * y.pow(3)).leadingPower(lex), 
+		PowerProduct(0).pow(2)*PowerProduct(1)
+	);
+	EXPECT_EQ(
+		(2 * x.pow(2) * y + x * y.pow(3)).leadingPower(deglex), //dynamic term order
+		PowerProduct(0) * PowerProduct(1).pow(3)
+	); 
+	EXPECT_THROW(P(0).leadingPower(lex),std::exception);
 }
 
 TYPED_TEST(PolynomialTest, LeadingCoefTest)
 {
-	EXPECT_EQ(x.leadingCoef(), 1);
-	EXPECT_EQ((2 * x.pow(2) * y + x * y.pow(3)).leadingCoef(), 2);
-	EXPECT_EQ(P(0).leadingCoef(), 0);
+	EXPECT_EQ(x.leadingCoef(lex), 1);
+	EXPECT_EQ((2 * x.pow(2) * y + x * y.pow(3)).leadingCoef(lex), 2);
+	EXPECT_EQ((2 * x.pow(2) * y + x * y.pow(3)).leadingCoef(deglex), 1);
+	EXPECT_EQ(P(0).leadingCoef(lex), 0);
 }
 
 TYPED_TEST(PolynomialTest, LeadingTermTest)
 {
-	EXPECT_EQ((x + y).leadingTerm(), x);
-	EXPECT_EQ((x.pow(3) * y.pow(2) - 2 * x.pow(3) * y.pow(3) + 5 * x * y).leadingTerm(),
+	EXPECT_EQ((x + y).leadingTerm(lex), x);
+	EXPECT_EQ((x.pow(3) * y.pow(2) - 2 * x.pow(3) * y.pow(3) + 5 * x * y).leadingTerm(lex),
 		-2 * x.pow(3) * y.pow(3));
-	EXPECT_EQ(P(1).leadingTerm(), 1);
-	EXPECT_EQ(P(0).leadingTerm(), 0);
+	EXPECT_EQ((x.pow(3) * y.pow(2) - 2 * x * y.pow(5) + 5 * x * y).leadingTerm(deglex),
+		-2 * x * y.pow(5)
+	);
+	EXPECT_EQ(P(1).leadingTerm(lex), 1);
+	EXPECT_EQ(P(0).leadingTerm(lex), 0);
 }

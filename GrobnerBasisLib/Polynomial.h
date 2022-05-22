@@ -17,54 +17,35 @@ For now, the static polymoprhism is adequate.
 #include <algorithm>	
 #include <string>
 
-//the default term order for polynomials
-using DefaultTermOrder = LexTermOrder;
 
-/// <summary>
-/// A polynomial is a sum of coefficients times product powers. They may be added, subtracted,
-/// multiplied, raised to exponents, and divided by monomials. The terms of a polynomial are 
-/// ordered (via Ord), and the leading term can be queried. Conversion to strings is done
-/// via a Printer. PowerProducts, Coef, and int may all be implicitly converted to Polynomial
-/// in an arithmetic expression (most operator overloads are non-member to support this).
-/// </summary>
-/// <typeparam name="Coef">
-/// The coefficient type. Must support all arithmetic operations (incl. division) and 
-/// construction/casting from int.
-/// </typeparam>
-/// <typeparam name="Ord">
-/// The subclass of PowerProduct::TermOrder used to compare terms.
-/// </typeparam>
-template <typename Coef, typename Ord = DefaultTermOrder>
+// A polynomial is a sum of coefficients times product powers. They may be added, subtracted,
+// multiplied, raised to exponents, and divided by monomials. The terms of a polynomial are 
+// ordered (via Ord), and the leading term can be queried. Conversion to strings is done
+// via a Printer. PowerProducts, CoefT, and int may all be implicitly converted to Polynomial
+// in an arithmetic expression (most operator overloads are non-member to support this).
+//
+// CoefT must support arithmetic (incl. division) and casting/contruction from int. 
+template <typename CoefT>
 class Polynomial final
 {
 public:
-	/// <summary>
-	/// Constructs a zero polynomial.
-	/// </summary>
+	// Constructs a zero polynomial.
 	Polynomial() = default;
 
-	/// <summary>
-	/// Constructs a monic monomial from a power product.
-	/// </summary>
+	// Constructs a monic monomial from a power product.
 	Polynomial(const PowerProduct& powerProduct)
-		: mTerms{ {powerProduct,Coef(1)} } { }
+		: mTerms{ {powerProduct,CoefT(1)} } { }
 
-	/// <summary>
-	/// Constructs a constant polynomial.
-	/// </summary>
-	/// <param name="constant">- the value of the constant</param>
-	Polynomial(const Coef& constant)
+	// Constructs a constant polynomial.
+	Polynomial(const CoefT& constant)
 	{
-		if (constant != Coef(0)) //if constant is zero, there are no terms
+		if (constant != CoefT(0)) //if constant is zero, there are no terms
 			mTerms.insert({ PowerProduct(), constant});
 	}
 
-	/// <summary>
-	/// Constructs a constant polynomial from an integer.
-	/// </summary>
-	/// <param name="constant">- the value of the constant</param>
+	// Constructs a constant polynomial from an integer.
 	Polynomial(int constant) 
-		: Polynomial(Coef(constant)) {}
+		: Polynomial(CoefT(constant)) {}
 
 	friend bool operator==(const Polynomial& left, const Polynomial& right)
 	{
@@ -75,9 +56,7 @@ public:
 		return !(left == right);
 	}
 
-	/// <summary>
-	/// Add two polynomials.
-	/// </summary>
+	// Add two polynomials.
 	friend Polynomial operator+(const Polynomial& left, const Polynomial& right)
 	{
 		//all non-member operator overloads are implemented inline to avoid
@@ -91,9 +70,7 @@ public:
 		return sum;
 	}
 
-	/// <summary>
-	/// Negate a polynomial.
-	/// </summary>
+	// Negate a polynomial.
 	friend Polynomial operator-(const Polynomial& arg)
 	{
 		Polynomial negation{ arg };
@@ -102,17 +79,13 @@ public:
 		return negation;
 	}
 
-	/// <summary>
-	/// Subtract two polynomials.
-	/// </summary>
+	// Subtract two polynomials.
 	friend Polynomial operator-(const Polynomial& left, const Polynomial& right)
 	{
 		return left + (-right);
 	}
 
-	/// <summary>
-	/// Multiply two polynomials.
-	/// </summary>
+	// Multiply two polynomials.
 	friend Polynomial operator*(const Polynomial& left, const Polynomial& right)
 	{
 		//to mulyiply polynomials, you multiply every pair of terms and add them 
@@ -123,12 +96,8 @@ public:
 		product.simplify();
 		return product;
 	}
-	/// <summary>
-	/// Divide a polynomial by a monomial.
-	/// </summary>
-	/// <param name="dividend">- the dividend polynomial</param>
-	/// <param name="monomial">- the divisor. Must have exactly one term.</param>
-	/// <returns>the quotient</returns>
+
+	// Divide a polynomial by a monomial. Throws if dividend.isDivisibleBy(monomial) is false.
 	friend Polynomial operator/(const Polynomial& dividend, const Polynomial& monomial)
 	{
 		if (!dividend.isDivisibleBy(monomial))
@@ -151,59 +120,58 @@ public:
 	Polynomial& operator*=(const Polynomial& right) { return *this = *this * right; }
 	Polynomial& operator/=(const Polynomial& monomial) { return *this = *this / monomial; }
 
-	/// <summary>
-	/// Raise the polynomial to a power.
-	/// </summary>
+	// Raise the polynomial to a power.
 	Polynomial pow(int power) const;
 
-	/// <summary>
-	/// Returns true if monomial has only one term which divides every term of this polynomial
-	/// </summary>
+	// Returns true if monomial has exactly one term which divides every term of this polynomial.
 	bool isDivisibleBy(const Polynomial& monomial) const;
 
-	/// <summary>
-	/// Returns the leading power product of this polynomial, as determined by Ord.
-	/// </summary>
-	PowerProduct leadingPower() const;
+	// Returns the leading power product of this polynomial, as determined by termOrder.
+	PowerProduct leadingPower(const PowerProduct::TermOrder& termOrder) const;
 
-	/// <summary>
-	/// Returns the leading coeficient of this polynomial, as determined by Ord.
-	/// </summary>
-	Coef leadingCoef() const;
+	// Returns the leading coeficient of this polynomial, as determined by termOrder.
+	CoefT leadingCoef(const PowerProduct::TermOrder& termOrder) const;
+
+	// Returns the leading term of this polynomial, as determined by termOrder.
+	Polynomial leadingTerm(const PowerProduct::TermOrder& termOrder) const;
 	
-	/// <summary>
-	/// Returns the leading term of this polynomial, as determined by Ord.
-	/// </summary>
-	Polynomial leadingTerm() const;
+	// Converts this polynomial to a string using a Printer.
+	// Terms are printed in an unspecified order.
+	std::string toString(Printer<CoefT>& printer) const;
 
-	//TO CONSIDER: Proposed replacements for dynamic ordering
-	//PowerProduct leadingPower(TermOrder& termOrder);  
-	//Coef leadingCoef(TermOrder& termOrder);
-	//Polynomial leadingTerm(TermOrder& termOrder);
-
-	/// <summary>
-	/// Converts this polynomial to a string.
-	/// </summary>
-	/// <param name="printer">- the printer to use</param>
-	std::string toString(Printer<Coef>& printer) const;
+	// Converts this polynomial to a string using a Printer.
+	// Terms are printed in the specified order, greatest to least.
+	std::string toString(Printer<CoefT>& printer,const PowerProduct::TermOrder& termOrder) const;
 
 private:
+	//The term order used internally.
+	using Ord = LexTermOrder;
+
 	//The terms of this polynomial, as a map from power products to coefficients.
 	//That is, mTerms[p] is the coefficient of power product p.
 	//Sorted with respect to Ord.
 	//Entries with value zero are always removed.
-	std::map<PowerProduct, Coef, Ord> mTerms;
+	std::map<PowerProduct, CoefT, Ord> mTerms;
 
 	//strip off any zero terms
 	void simplify();
+
+	//return an iterator to the leading term in mTerms
+	auto leading(const PowerProduct::TermOrder& termOrder) const
+	{
+		return std::max_element(
+			mTerms.begin(), mTerms.end(),
+			[&](auto l, auto r) { return termOrder(l.first, r.first); }
+		);
+	}
 
 	//exponentiate this polynomial recursively
 	Polynomial recursivePow(int power) const;
 };
 
 
-template <typename Coef, typename Ord>
-bool Polynomial<Coef, Ord>::isDivisibleBy(const Polynomial& monomial) const
+template <typename CoefT>
+bool Polynomial<CoefT>::isDivisibleBy(const Polynomial& monomial) const
 {
 	if (monomial.mTerms.size() != 1) //divisor must have exactly one term
 		return false;
@@ -213,70 +181,85 @@ bool Polynomial<Coef, Ord>::isDivisibleBy(const Polynomial& monomial) const
 	return true;
 }
 
-template <typename Coef, typename Ord>
-Polynomial<Coef, Ord> Polynomial<Coef, Ord>::pow(int power) const
+template <typename CoefT>
+Polynomial<CoefT> Polynomial<CoefT>::pow(int power) const
 {
 	if (power < 0)
 		throw std::logic_error("polynomial raised to negative exponent");
 
-	if (mTerms.size() == 1 && mTerms.begin()->second == Coef(1)) 
+	if (mTerms.size() == 1 && mTerms.begin()->second == CoefT(1)) 
 		return mTerms.begin()->first.pow(power); //optimization for standalone power products
 	else
 		return recursivePow(power); //recursive algorithm for general case
 }
 
-template <typename Coef, typename Ord>
-PowerProduct Polynomial<Coef,Ord>::leadingPower() const
+template<typename CoefT>
+PowerProduct Polynomial<CoefT>::leadingPower(const PowerProduct::TermOrder& termOrder) const
 {
 	if (mTerms.empty())
-		throw std::logic_error("leadingPower called on 0"); //leading power product of 0 is undefined
+		throw std::logic_error("leadingPower called on 0");
 	else
-		return mTerms.rbegin()->first; //the last term in the map is the leading term 
+		return leading(termOrder)->first;
 }
 
-template <typename Coef, typename Ord>
-Coef Polynomial<Coef, Ord>::leadingCoef() const
+template<typename CoefT>
+CoefT Polynomial<CoefT>::leadingCoef(const PowerProduct::TermOrder& termOrder) const
 {
 	if (mTerms.empty())
-		return Coef(0); //leading coefficient of 0 is 0
+		return CoefT(0);
 	else
-		return mTerms.rbegin()->second;
+		return leading(termOrder)->second;
 }
 
-template <typename Coef, typename Ord>
-Polynomial<Coef,Ord> Polynomial<Coef, Ord>::leadingTerm() const
+template<typename CoefT>
+Polynomial<CoefT> Polynomial<CoefT>::leadingTerm(const PowerProduct::TermOrder& termOrder) const
 {
 	if (mTerms.empty())
-		return Coef(0); //leading term of 0 is 0
+		return CoefT(0); //leading term of 0 is 0
 	else
-		return leadingCoef() * Polynomial(leadingPower());
+	{
+		auto it = leading(termOrder);
+		return it->second * Polynomial(it->first);
+	}
 }
 
-template <typename Coef, typename Ord>
-std::string Polynomial<Coef, Ord>::toString(Printer<Coef>& printer) const
+template <typename CoefT>
+std::string Polynomial<CoefT>::toString(Printer<CoefT>& printer) const
 {
 	for (auto it = mTerms.rbegin(); it != mTerms.rend(); ++it)
-		printer.addTerm(it->second, it->first); //add terms in reverse order, so leading term is first
+		printer.addTerm(it->second,it->first); 
 	return printer.print();
 }
 
-template<typename Coef, typename Ord>
-void Polynomial<Coef, Ord>::simplify()
+template<typename CoefT>
+std::string Polynomial<CoefT>::toString(Printer<CoefT>& printer, const PowerProduct::TermOrder& termOrder) const
+{
+	//sort the terms according to termOrder
+	std::map<PowerProduct, CoefT, const PowerProduct::TermOrder&> sortedTerms(
+		mTerms.begin(),mTerms.end(),termOrder 
+	);
+	for (auto it = sortedTerms.rbegin(); it != sortedTerms.rend(); ++it) 
+		printer.addTerm(it->second,it->first);//add terms in reverse order, so leading term is first
+	return printer.print();
+}
+
+template<typename CoefT>
+void Polynomial<CoefT>::simplify()
 {
 	for (auto it = mTerms.begin(); it != mTerms.end();)
 	{
-		if (it->second == Coef(0))
+		if (it->second == CoefT(0))
 			it = mTerms.erase(it); //erase terms with coefficient 0
 		else
 			++it;
 	}
 }
 
-template<typename Coef, typename Ord>
-Polynomial<Coef, Ord> Polynomial<Coef, Ord>::recursivePow(int power) const
+template<typename CoefT>
+Polynomial<CoefT> Polynomial<CoefT>::recursivePow(int power) const
 {
 	if (power == 0) //base case
-		return Coef(1);
+		return CoefT(1);
 	if (power == 1) 
 		return *this;
 	Polynomial temp = recursivePow(power / 2); //recursion

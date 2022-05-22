@@ -36,6 +36,7 @@
     <ClCompile Include="DegLexTermOrder.cpp" />
     <ClCompile Include="LexTermOrder.cpp" />
     <ClCompile Include="PowerProduct.cpp" />
+    <ClCompile Include="RationalParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="PowerProductUML.txt" />

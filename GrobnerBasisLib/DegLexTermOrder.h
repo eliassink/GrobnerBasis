@@ -5,10 +5,9 @@ Date: 5/12/2022
 
 #pragma once
 #include "PowerProduct.h"
-/// <summary>
-/// Compares power products using the degree lexicographical order: compare total degree first,
-/// and break ties with lexicogrpahic order.
-/// </summary>
+
+// Compares power products using the degree lexicographical order: compare total degree first,
+// and break ties with lexicogrpahical order.
 class DegLexTermOrder final :
     public PowerProduct::TermOrder
 {

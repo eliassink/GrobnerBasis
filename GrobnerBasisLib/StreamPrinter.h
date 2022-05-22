@@ -11,40 +11,27 @@ Notes: See StreamPrinterUML.txt for Unified Modeling Language description
 #include <vector>
 #include <regex>
 
-/// <summary>
-/// Prints polynomials using a std::ostringstream. Coef must have an appropriate insertion operator.
-/// Supports customizable variable names.
-/// </summary>
-/// <typeparam name="Coef">The type of coefficients of the polynomial.</typeparam>
+// Prints polynomials using a std::ostringstream. Coef must have an appropriate insertion operator.
+// Supports customizable variable names.
 template<typename Coef>
 class StreamPrinter final :
     public Printer<Coef>
 {
 public:
-    /// <summary>
-    /// Constructs a StreamPrinter with default variable names x1,x2,...
-    /// </summary>
+    // Constructs a StreamPrinter with default variable names x1,x2,...
     StreamPrinter() {};
 
-    /// <summary>
-    /// Constructs a StreamPrinter with the variable names in the initializer list.
-    /// Further variables have default names x1,x2,...
-    /// </summary>
+    // Constructs a StreamPrinter with the variable names in the initializer list.
+    // Further variables have default names.
     StreamPrinter(std::initializer_list<std::string> varNames)
         : mVarNames{ varNames } {}
 
-    /// <summary>
-    ///  Constructs a StreamPrinter with the variable names in the range [first,last).
-    /// </summary>
+    //  Constructs a StreamPrinter with the variable names in the range [first,last).
     template<typename StringIterator>
     StreamPrinter(StringIterator first, StringIterator last)
         : mVarNames{ first, last } {}
 
-    /// <summary>
-    /// Add a term to the buffer.
-    /// </summary>
-    /// <param name="coef">- the coefficient of the term.</param>
-    /// <param name="powerProduct">- the power product of the term.</param>
+    // Add a term to the buffer.
     void addTerm(const Coef& coef, const PowerProduct& powerProduct) override
     {
         if (!isZero)
@@ -54,9 +41,7 @@ public:
         mStringStream << coef << powerProduct.toString(*this);
     }
    
-    /// <summary>
-    /// Return a polynomial string from the terms in the buffer, and clear the buffer.
-    /// </summary>
+    // Return a polynomial string from the terms in the buffer, and clear the buffer.
     std::string print()
     {
         if (isZero)
@@ -76,10 +61,8 @@ public:
         return output;
     }
 
-    /// <summary>
-    /// Returns a string representation of a power product with the
-    /// given degrees.
-    /// </summary>
+    // Returns a string representation of a power product with the
+    // given degrees.
     std::string powerProductString(const std::vector<int>& degrees) override
     {
         std::ostringstream ss;

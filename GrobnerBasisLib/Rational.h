@@ -9,19 +9,14 @@ but I guess that's C++.
 #include <stdexcept>
 #include <iostream>
 
-/// <summary>
-/// Models the rational numbers, with arithmetic, comparison, and stream insertion/extraction 
-/// </summary>
-/// <typeparam name="Integer">
-/// The integral type to use. Must support arithmetic, comparison, and stream insertion/extraction
-/// </typeparam>
-template<typename Integer>
+
+// Models the rational numbers, with arithmetic, comparison, and stream insertion/extraction.
+// Integer should be a signed integral type.
+template<typename Integer = int>
 class Rational final
 {
 public:
-	/// <summary>
-	/// Constructs a rational number.
-	/// </summary>
+	// Constructs a rational number.
 	Rational(Integer numerator = 0, Integer denominator = 1)
 		: mNumerator{numerator}, mDenominator{denominator}
 	{

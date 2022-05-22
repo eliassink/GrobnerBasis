@@ -5,7 +5,7 @@
 class RationalTest : public testing::Test
 {
 protected:
-	using R = Rational<int>;
+	using R = Rational<>;
 };
 
 TEST_F(RationalTest, EqualityTest)
