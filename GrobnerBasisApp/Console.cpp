@@ -132,16 +132,16 @@ void Console::setTermOrder(std::istream& input, std::ostream& output)
 		if (name == "lex")
 		{
 			mIdeal.setTermOrder(std::make_unique<LexTermOrder>());
-			output << "Term order changed to lex";
+			output << "Term order changed to lex\n";
 		}
 		else if (name == "deglex")
 		{
 			mIdeal.setTermOrder(std::make_unique<DegLexTermOrder>());
-			output << "Term order changed to deglex";
+			output << "Term order changed to deglex\n";
 		}
 		else
 		{
-			output << "Unknown term order " << name;
+			output << "Unknown term order " << name << "\n";
 		}
 	}
 	catch (std::exception& ex)
